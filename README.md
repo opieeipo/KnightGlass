@@ -63,7 +63,7 @@ shasum -a 256 data/raw/*.gz
 
 | File | Bytes | SHA-256 |
 |---|---:|---|
-| `auth.txt.gz` | pending | pending, to be recorded once downloaded |
+| `auth.txt.gz` | 7626505158 | `9c6b0cc261b0edd19324f6fd1839743224938a7f644ed202ca70bd70a89bf672` |
 | `dns.txt.gz` | 185104940 | `3e1cb718baa6be7af7bd376324285be45d99ee2563d22bc4abf023572120cab9` |
 | `redteam.txt.gz` | 4846 | `606635837c684ad11e464075ecf97bc5df325ff7d7f64614d2d8c8af18051669` |
 
