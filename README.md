@@ -306,7 +306,6 @@ Use de-identified data responsibly. Do not attempt re-identification or automati
 - Versioned sampling and outage specifications.
 - Authentication-only and combined-source baselines.
 - Paired resilience experiments and review-budget tables.
-- A paper draft reporting positive, negative, and inconclusive findings.
 
 ## 14. Dataset Attribution and Publication Citations
 
