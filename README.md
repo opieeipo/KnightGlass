@@ -3,6 +3,22 @@
 
 > **Status:** research proposal and notebook implementation plan. No experimental results or novelty claims have yet been established.
 
+## Project Progress
+
+**Overall: 19%** (7 of 36 tasks) -- see [TODO](#todo) for details
+
+```
+Phase 0 - Setup               ████████████████░░░░  80% (4/5)
+Phase 1 - Data audit          ███████░░░░░░░░░░░░░  33% (3/9)
+Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 5 - Evaluation          ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 6 - Paper               ░░░░░░░░░░░░░░░░░░░░   0% (0/2)
+```
+
+*Last updated: 2026-10-19*
+
 ## Abstract
 
 NightGlass investigates whether DNS context improves the ranking of suspicious authentication events and whether that improvement survives interruptions in DNS collection. The study uses the LANL Comprehensive, Multi-Source Cyber-Security Events dataset. Authentication events remain observable; supporting DNS events are selectively withheld in controlled experiments. Authentication-only, combined-source, and outage-trained models are compared using chronological evaluation and fixed analyst review budgets. Known red-team authentication events provide positive evaluation examples; other events remain unlabeled rather than verified benign. The intended contribution is an experimentally supported assessment of when DNS context is useful and whether structured-outage training provides operational value beyond a simpler authentication-only fallback.
@@ -323,3 +339,62 @@ A. D. Kent, "Comprehensive, Multi-Source Cybersecurity Events," Los Alamos Natio
 ```
 
 LANL states that, to the extent possible under law, it has waived copyright and related or neighboring rights to this dataset. NightGlass code is released under the MIT License (see `LICENSE`). That license is separate from the dataset's terms.
+
+## TODO
+
+### Phase 0 - Setup
+
+- [x] Scaffold notebooks, modules, config and ignore rules
+- [x] MIT license
+- [x] Google Drive mirror with checksums for all three archives
+- [x] gdown download step, verified against checksums
+- [ ] Pin package versions in `requirements.txt`
+
+### Phase 1 - Data audit
+
+- [x] Streaming ingestion to day-partitioned Parquet
+- [x] Ingestion tests on synthetic data
+- [x] Red-team matching with duplicate, unmatched and one-to-many audit
+- [ ] Ingest the full authentication archive
+- [ ] Run the full red-team matching audit
+- [ ] Audit known-positive coverage across the proposed splits
+- [ ] Quantify DNS pair coverage and missing identifiers
+- [ ] Decide how to treat the DNS break around days 24 to 27
+- [ ] Lock chronological split boundaries
+
+### Phase 2 - Causal features and sampling
+
+- [ ] Authentication history features
+- [ ] DNS context features
+- [ ] Equal-timestamp batch scoring before state updates
+- [ ] Time-stratified reservoir sample of unlabeled training rows
+- [ ] Sampling manifest with probabilities, row IDs and seeds
+
+### Phase 3 - Baselines
+
+- [ ] Relationship-novelty and rate rule baselines
+- [ ] Authentication-only model
+- [ ] Complete-telemetry combined model
+- [ ] Choose a gradient-boosting library
+- [ ] Decide whether DNS improves ranking under complete telemetry
+
+### Phase 4 - DNS outage replay
+
+- [ ] Seeded outage schedules for each scenario
+- [ ] DNS suppression with feature-state replay
+- [ ] Outage-trained combined model
+- [ ] Causal-trigger fallback and oracle fallback baselines
+- [ ] Held-out outage conditions
+
+### Phase 5 - Evaluation
+
+- [ ] Recall of unique red-team keys at daily review budgets
+- [ ] Recovery versus review budget curves
+- [ ] Paired complete versus outage comparisons
+- [ ] Time-block resampling for uncertainty
+- [ ] Paper tables and figures
+
+### Phase 6 - Paper
+
+- [ ] Focused related-work review
+- [ ] Paper draft with positive, negative and inconclusive findings
