@@ -5,7 +5,7 @@
 
 ## Project Progress
 
-**Overall: 19%** (7 of 36 tasks) -- see [TODO](#todo) for details
+**Overall: 21%** (7 of 34 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████░░░░  80% (4/5)
@@ -14,7 +14,6 @@ Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░�
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 5 - Evaluation          ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
-Phase 6 - Paper               ░░░░░░░░░░░░░░░░░░░░   0% (0/2)
 ```
 
 *Last updated: 2026-10-19*
@@ -251,7 +250,7 @@ notebooks/
   02_causal_features_and_sampling.ipynb
   03_baseline_models.ipynb
   04_dns_outage_replay.ipynb
-  05_evaluation_and_paper_tables.ipynb
+  05_evaluation_and_tables.ipynb
 src/
   ingestion.py
   features.py
@@ -392,9 +391,4 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [ ] Recovery versus review budget curves
 - [ ] Paired complete versus outage comparisons
 - [ ] Time-block resampling for uncertainty
-- [ ] Paper tables and figures
-
-### Phase 6 - Paper
-
-- [ ] Focused related-work review
-- [ ] Paper draft with positive, negative and inconclusive findings
+- [ ] Tables and figures
