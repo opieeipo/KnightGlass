@@ -1,0 +1,40 @@
+# NightGlass experiment configuration.
+# Values are the provisional defaults from the README. Change them only with
+# training/validation evidence, and record every change.
+
+data:
+  raw_dir: data/raw
+  interim_dir: data/interim
+  processed_dir: data/processed
+  files:
+    auth: auth.txt.gz
+    dns: dns.txt.gz
+    redteam: redteam.txt.gz
+  missing_value: "?"
+
+seed: 0
+
+# day_index = floor((time - 1) / 86400) + 1
+splits:
+  warmup: [1, 7]
+  train: [8, 30]
+  validation: [31, 42]
+  test: [43, 58]
+
+features:
+  windows_seconds: [300, 3600, 86400]
+
+sampling:
+  unlabeled_cap: 1000000
+  stratify_by: day
+  compare_weighted_unweighted: true
+
+outages:
+  durations_seconds: [300, 3600, 21600]
+  scenarios: [global, source_subset, longer_than_training]
+  seeds: [0, 1, 2, 3, 4]
+  heldout: []  # set at least one duration or source-subset condition
+
+evaluation:
+  daily_review_budgets: [100, 500, 1000]
+  recall_unit: unique_redteam_key

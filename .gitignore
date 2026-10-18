@@ -1,0 +1,34 @@
+# Data: LANL archives and all derived data stay local (see README section 10)
+data/**
+!data/raw/
+!data/interim/
+!data/processed/
+!data/*/.gitkeep
+
+# Generated results: keep the folders, not the outputs
+results/**/*
+!results/*/
+!results/*/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment and secrets
+.env
+.env.*
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
