@@ -271,7 +271,7 @@ results/
 
 Notebooks provide the executable narrative; reusable streaming and state-management code belongs in small imported modules. This avoids duplicating complex logic across notebooks.
 
-Suggested starting stack: Python, JupyterLab, pandas or Polars, PyArrow, scikit-learn, and one gradient-boosting implementation. Pin package versions once a working environment is established.
+Suggested starting stack: Python, JupyterLab, pandas or Polars, PyArrow, scikit-learn, and one gradient-boosting implementation. Package versions are pinned in `requirements.txt`.
 
 Every experiment should save configuration, seeds, data hashes or file sizes, split boundaries, sampling manifests, model settings, and metric tables. Notebooks must run in order from a clean kernel without hidden state. Derived data and downloaded archives should not be committed to Git.
 
