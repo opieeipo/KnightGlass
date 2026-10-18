@@ -1,4 +1,4 @@
-# NightGlass
+# KnightGlass
 ## Authentication Threat Detection Under Incomplete DNS Telemetry
 
 > **Status:** research proposal and notebook implementation plan. No experimental results or novelty claims have yet been established.
@@ -21,11 +21,11 @@ Phase 6 - Paper               ░░░░░░░░░░░░░░░░�
 
 ## Abstract
 
-NightGlass investigates whether DNS context improves the ranking of suspicious authentication events and whether that improvement survives interruptions in DNS collection. The study uses the LANL Comprehensive, Multi-Source Cyber-Security Events dataset. Authentication events remain observable; supporting DNS events are selectively withheld in controlled experiments. Authentication-only, combined-source, and outage-trained models are compared using chronological evaluation and fixed analyst review budgets. Known red-team authentication events provide positive evaluation examples; other events remain unlabeled rather than verified benign. The intended contribution is an experimentally supported assessment of when DNS context is useful and whether structured-outage training provides operational value beyond a simpler authentication-only fallback.
+KnightGlass investigates whether DNS context improves the ranking of suspicious authentication events and whether that improvement survives interruptions in DNS collection. The study uses the LANL Comprehensive, Multi-Source Cyber-Security Events dataset. Authentication events remain observable; supporting DNS events are selectively withheld in controlled experiments. Authentication-only, combined-source, and outage-trained models are compared using chronological evaluation and fixed analyst review budgets. Known red-team authentication events provide positive evaluation examples; other events remain unlabeled rather than verified benign. The intended contribution is an experimentally supported assessment of when DNS context is useful and whether structured-outage training provides operational value beyond a simpler authentication-only fallback.
 
 ## 1. Motivation and Scope
 
-A detector that depends on supporting telemetry should not become less useful than a simpler detector when that source disappears. NightGlass asks whether additional DNS context is worth its operational dependency.
+A detector that depends on supporting telemetry should not become less useful than a simpler detector when that source disappears. KnightGlass asks whether additional DNS context is worth its operational dependency.
 
 The project does not attempt to infer business authorization, detect every attack, prove that DNS inactivity represents collection failure, or attribute outages to an attacker. It is a retrospective, controlled study of authentication-event ranking under specified supporting-source loss.
 
@@ -298,7 +298,7 @@ Proceed with a DNS-resilience contribution only if the signal and evaluation sup
 - Experimental outage durations and review budgets require sensitivity analysis.
 - No claim of methodological novelty is made until focused related-work review and experiments establish differentiation.
 
-Use de-identified data responsibly. Do not attempt re-identification or automatic access revocation. NightGlass is an analyst-prioritization study, not an authorization decision system.
+Use de-identified data responsibly. Do not attempt re-identification or automatic access revocation. KnightGlass is an analyst-prioritization study, not an authorization decision system.
 
 ## 13. Expected Deliverables
 
@@ -338,7 +338,7 @@ A. D. Kent, "Comprehensive, Multi-Source Cybersecurity Events," Los Alamos Natio
 }
 ```
 
-LANL states that, to the extent possible under law, it has waived copyright and related or neighboring rights to this dataset. NightGlass code is released under the MIT License (see `LICENSE`). That license is separate from the dataset's terms.
+LANL states that, to the extent possible under law, it has waived copyright and related or neighboring rights to this dataset. KnightGlass code is released under the MIT License (see `LICENSE`). That license is separate from the dataset's terms.
 
 ## TODO
 

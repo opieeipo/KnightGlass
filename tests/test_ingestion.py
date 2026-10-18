@@ -8,7 +8,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from nightglass.ingestion import (  # noqa: E402
+from knightglass.ingestion import (  # noqa: E402
     AUTH_COLUMNS, day_index, match_redteam, stream_to_parquet,
 )
 
