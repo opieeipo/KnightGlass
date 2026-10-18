@@ -10,6 +10,11 @@ data:
     auth: auth.txt.gz
     dns: dns.txt.gz
     redteam: redteam.txt.gz
+  # Google Drive file IDs for gdown (files shared as "Anyone with the link").
+  drive_ids:
+    auth: ""
+    dns: ""
+    redteam: ""
   missing_value: "?"
 
 seed: 0

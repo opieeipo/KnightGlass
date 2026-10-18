@@ -6,4 +6,5 @@ polars
 pyarrow
 scikit-learn
 pyyaml
+gdown
 # Add one gradient-boosting implementation (e.g. lightgbm or xgboost).
