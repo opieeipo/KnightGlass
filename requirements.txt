@@ -1,11 +1,11 @@
-# Starting stack from README section 10. Pin versions once a working
-# environment is established.
-jupyterlab
-pandas
-polars
-pyarrow
-scikit-learn
-pyyaml
-gdown
-pytest
+# Starting stack from README section 10, pinned to the versions in the
+# working environment (Python 3.12).
+jupyterlab==4.6.4
+pandas==3.0.6
+polars==2.0.0
+pyarrow==26.0.0
+scikit-learn==1.9.1
+pyyaml==6.0.3
+gdown==6.4.2
+pytest==9.1.1
 # Add one gradient-boosting implementation (e.g. lightgbm or xgboost).

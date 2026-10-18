@@ -5,10 +5,10 @@
 
 ## Project Progress
 
-**Overall: 21%** (7 of 34 tasks) -- see [TODO](#todo) for details
+**Overall: 24%** (8 of 34 tasks) -- see [TODO](#todo) for details
 
 ```
-Phase 0 - Setup               ████████████████░░░░  80% (4/5)
+Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
 Phase 1 - Data audit          ███████░░░░░░░░░░░░░  33% (3/9)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -346,7 +346,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] MIT license
 - [x] Google Drive mirror with checksums for all three archives
 - [x] gdown download step, verified against checksums
-- [ ] Pin package versions in `requirements.txt`
+- [x] Pin package versions in `requirements.txt`
 
 ### Phase 1 - Data audit
 
