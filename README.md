@@ -51,6 +51,22 @@ LANL documents 58 consecutive days of de-identified enterprise events, common co
 
 Process and network-flow files are outside the initial scope. Sizes are compressed; intermediate storage requirements must be measured during the pilot.
 
+### Data mirror and checksums
+
+The notebooks download the archives from a Google Drive mirror with gdown, for convenience. The mirror is an unmodified copy of LANL's public release, which LANL has dedicated to the public domain under CC0. LANL remains the authoritative source. Download from the official page above to register your use and to hear about any dataset corrections LANL publishes.
+
+The SHA-256 checksums below were computed on copies downloaded from LANL. Verify a mirrored file before use:
+
+```bash
+shasum -a 256 data/raw/*.gz
+```
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| `auth.txt.gz` | pending | pending, to be recorded once downloaded |
+| `dns.txt.gz` | 185104940 | `3e1cb718baa6be7af7bd376324285be45d99ee2563d22bc4abf023572120cab9` |
+| `redteam.txt.gz` | 4846 | `606635837c684ad11e464075ecf97bc5df325ff7d7f64614d2d8c8af18051669` |
+
 ### Authentication schema
 
 ```text
