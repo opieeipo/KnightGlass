@@ -306,4 +306,4 @@ A. D. Kent, "Comprehensive, Multi-Source Cybersecurity Events," Los Alamos Natio
 }
 ```
 
-LANL states that, to the extent possible under law, it has waived copyright and related or neighboring rights to this dataset. Any license chosen for NightGlass code is separate from the dataset's terms.
+LANL states that, to the extent possible under law, it has waived copyright and related or neighboring rights to this dataset. NightGlass code is released under the MIT License (see `LICENSE`). That license is separate from the dataset's terms.
