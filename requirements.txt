@@ -7,4 +7,5 @@ pyarrow
 scikit-learn
 pyyaml
 gdown
+pytest
 # Add one gradient-boosting implementation (e.g. lightgbm or xgboost).

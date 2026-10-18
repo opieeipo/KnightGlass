@@ -12,7 +12,7 @@ data:
     redteam: redteam.txt.gz
   # Google Drive file IDs for gdown (files shared as "Anyone with the link").
   drive_ids:
-    auth: ""
+    auth: "1PjDOCNmlTZwb9Rt_yosRn66bNQzkO67N"
     dns: "1VrAUrGGpmJXYWpIG9P8XiZolsQo0Ty6A"
     redteam: "1rNNuvN7Fzg3WFAs1Sdys9tw8Nj8pfQD1"
   missing_value: "?"
