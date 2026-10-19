@@ -34,6 +34,10 @@ splits:
 features:
   windows_seconds: [300, 3600, 86400]
 
+# DNS collection changes scale at day 27 (README section 6, DNS coverage audit).
+dns:
+  full_collection_from_day: 27
+
 sampling:
   unlabeled_cap: 1000000
   stratify_by: day

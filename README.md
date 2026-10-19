@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 37%** (13 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 40%** (14 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ████████████████░░░░  80% (8/10)
+Phase 1 - Data audit          ██████████████████░░  90% (9/10)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -231,7 +231,7 @@ Initial candidate windows are 5 minutes, 1 hour, and 24 hours. Select any change
 - Whether source computer `s` resolved destination computer `d` within a preceding window.
 - Number of observed DNS records for `(s, d)` within that window.
 - Time since the last observed matching DNS record.
-- Time since any DNS record from source `s`.
+- ~~Time since any DNS record from source `s`.~~ Excluded; see "Treatment of the DNS break" below.
 - Previous observation of the source–destination DNS relationship.
 
 Represent never-observed history separately from a measured elapsed time. Distinguish missing identifiers from a valid pair with zero observed lookups.
@@ -253,6 +253,16 @@ Share of authentication events with different source and destination computers t
 No red-team source computer has a DNS record before day 27, so none of the 655 matched known-positive rows on days 2–23, and none of the 585 possible red-team rows there, has any earlier DNS context. Of the 47 matched rows on days 27–30, all have source DNS within 24 hours and 3 have ever resolved their destination.
 
 About 12.3 million authentication rows (1.2%) have a destination that is not a computer identifier, mostly `TGT` (10.9 million, Kerberos ticket requests) and user-like values such as `U22`. These can never match a DNS pair.
+
+### Treatment of the DNS break
+
+Decision: compute DNS features on all days and mark the collection era.
+
+- Every authentication record carries a `dns_full_collection` indicator, true from day 27 (`configs/experiment.yaml`, `dns.full_collection_from_day`). It describes the release, not any host, and is known to an operator in advance, so it is not an outage oracle.
+- Drop DNS features that mainly measure whether a host is being collected. "Time since any DNS record from source `s`" is excluded; pair-level features are kept.
+- Because no red-team source computer is collected before day 27, a model can learn "no DNS history means attack" from the collection gap alone. Test for this: fit the authentication-only model plus a single indicator of whether the source computer has any earlier DNS record. If that indicator reproduces most of the combined model's gain, report the gain as a collection artifact, not a DNS benefit.
+- Report DNS comparisons separately for known positives in the full-collection era (days 27–30, 46 matched keys) and before it.
+- Days 25–26, with no DNS at all, are part of the incomplete era, not a simulated outage.
 
 ## 7. Controlled DNS-Loss Experiments
 
@@ -417,7 +427,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
 - [x] Audit known-positive coverage across the proposed splits
 - [x] Quantify DNS pair coverage and missing identifiers
-- [ ] Decide how to treat the DNS break around days 24 to 27
+- [x] Decide how to treat the DNS break around days 24 to 27
 - [ ] Lock chronological split boundaries
 
 ### Phase 2 - Causal features and sampling
