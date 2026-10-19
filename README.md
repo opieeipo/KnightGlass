@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 29%** (10 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 31%** (11 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ██████████░░░░░░░░░░  50% (5/10)
+Phase 1 - Data audit          ████████████░░░░░░░░  60% (6/10)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -131,6 +131,10 @@ An unlabeled authentication record is possible red-team if all of these hold:
 - it falls on a dataset day with at least one red-team key.
 
 The rule uses only facts taken from the red-team file. Do not add behavioral conditions such as login volume, novelty or rate: those are the signals the models score, so a label built from them would make evaluation circular. Freeze the rule before modeling and record any change.
+
+Documented exceptions, also possible red-team:
+
+- Row 897415494 (time 4340961, day 51): `U349@DOM1` from `C17693` to `C3601`, NTLM network logon. It repeats red-team key 81 (day 9) exactly, `U349@DOM1` otherwise never authenticates from `C17693`, and the account's owner was making ordinary Kerberos logons from their usual workstations in the same hour. It fails only the labeled-day condition.
 
 ### 4.3 Unmatched red-team keys
 
@@ -383,7 +387,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Red-team matching with duplicate, unmatched and one-to-many audit
 - [x] Ingest the full authentication archive
 - [x] Run the full red-team matching audit
-- [ ] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
+- [x] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
 - [ ] Audit known-positive coverage across the proposed splits
 - [ ] Quantify DNS pair coverage and missing identifiers
 - [ ] Decide how to treat the DNS break around days 24 to 27
