@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 40%** (14 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 43%** (15 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ██████████████████░░  90% (9/10)
+Phase 1 - Data audit          ████████████████████ 100% (10/10) ✓
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -168,18 +168,25 @@ All raw records may contribute to history, including failures and machine-accoun
 
 ### 5.3 Chronological split
 
-Provisional boundaries, using `day_index = floor((time - 1) / 86400) + 1`:
+Locked boundaries, using `day_index = floor((time - 1) / 86400) + 1`:
 
-| Period | Dataset days | Role |
-|---|---|---|
-| Warm-up | 1–7 | Historical state only |
-| Training | 8–30 | Model fitting |
-| Validation | 31–42 | Hyperparameters, review policy, and outage settings |
-| Test | 43–58 | Final evaluation only |
+| Period | Dataset days | Role | Matched keys | Possible rows |
+|---|---|---|---:|---:|
+| Warm-up | 1–5 | Historical state only | 25 | 19 |
+| Training | 6–12 | Model fitting | 291 | 340 |
+| Validation | 13–20 | Hyperparameters, review policy, and outage settings | 333 | 225 |
+| Test | 21–30 | Final evaluation only, scored once | 52 | 33 |
+| Alert volume | 31–58 | Positive-free check of daily alert load; no recall | 0 | 1 |
 
-Audit known-positive coverage before locking these boundaries. These are provisional engineering defaults, not a claim that positives occur in every interval. If test coverage is insufficient, select a documented alternative chronological or rolling-origin design. Do not select boundaries based on which model scores best. If supervised training positives are insufficient, use an anomaly-ranking formulation rather than borrowing future labels.
+After settings are chosen on validation, refit the final models on days 6–20 with those settings fixed, then score the test period once. Validation results come from models fit on days 6–12 only.
 
-Coverage audit of the provisional boundaries (matched keys and possible red-team rows, section 4):
+The cuts fall on days without known positives (11–12 and 17–20), so no attack burst is split across periods. Each period is still dominated by one burst: day 9 (261 keys) in training, day 13 (207) in validation, and day 27 (26) in test. Source computer `C17693` accounts for most keys in every period; the test period also has 11 keys from `C19932`. Of the 52 test keys, 46 fall in the DNS full-collection era (days 27–30, section 6). Days 31–58 report daily alert counts and score distributions only; an alert there is not a measured false positive (section 4.4).
+
+The boundaries were chosen from label coverage alone, before any model was fit. Do not change them based on which model scores best; record any change and its reason.
+
+#### Why the provisional boundaries were replaced
+
+The original provisional boundaries were warm-up 1–7, training 8–30, validation 31–42 and test 43–58. Their coverage audit (matched keys and possible red-team rows, section 4):
 
 | Period | Days | Matched keys | Possible rows | Days with keys |
 |---|---|---:|---:|---|
@@ -188,7 +195,7 @@ Coverage audit of the provisional boundaries (matched keys and possible red-team
 | Validation | 31–42 | 0 | 0 | none |
 | Test | 43–58 | 0 | 1 | none |
 
-Validation and test contain no known positives, so the provisional boundaries cannot measure recall and must be replaced before modeling. All known positives fall on days 2–30; 669 of the 701 matched keys come from source computer `C17693`.
+Validation and test contained no known positives, so those boundaries could not measure recall. All known positives fall on days 2–30; 669 of the 701 matched keys come from source computer `C17693`.
 
 Within each evaluation period, historical features may update from earlier observed events, but model parameters remain fixed. Future labels are never used in feature construction.
 
@@ -428,7 +435,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Audit known-positive coverage across the proposed splits
 - [x] Quantify DNS pair coverage and missing identifiers
 - [x] Decide how to treat the DNS break around days 24 to 27
-- [ ] Lock chronological split boundaries
+- [x] Lock chronological split boundaries
 
 ### Phase 2 - Causal features and sampling
 

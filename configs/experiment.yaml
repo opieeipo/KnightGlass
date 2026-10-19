@@ -25,11 +25,15 @@ labels:
   possible_exceptions: [897415494]
 
 # day_index = floor((time - 1) / 86400) + 1
+# Locked from label coverage (README section 5.3).
 splits:
-  warmup: [1, 7]
-  train: [8, 30]
-  validation: [31, 42]
-  test: [43, 58]
+  warmup: [1, 5]
+  train: [6, 12]
+  validation: [13, 20]
+  test: [21, 30]
+  alert_volume: [31, 58]
+# Final models are refit on these days with settings chosen on validation.
+refit_days: [6, 20]
 
 features:
   windows_seconds: [300, 3600, 86400]
