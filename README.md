@@ -5,13 +5,13 @@
 
 ## Project Progress
 
-**Overall: 43%** (15 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 46%** (16 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
 Phase 1 - Data audit          ████████████████████ 100% (10/10) ✓
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
-Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 3 - Baselines           ████░░░░░░░░░░░░░░░░  20% (1/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 5 - Evaluation          ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 ```
@@ -297,7 +297,7 @@ Outage schedules are experiment metadata. Do not feed the true synthetic outage 
 | Outage-trained combined model | Tests structured-loss training |
 | Simple authentication-only fallback | Tests whether added complexity is necessary |
 
-Start with logistic regression and gradient-boosted trees. Fit preprocessing only on training data. Exclude raw user/computer IDs from the initial model inputs; use them for historical aggregation instead. Document any later identity-encoding experiment separately.
+Start with logistic regression and gradient-boosted trees. The gradient-boosting implementation is scikit-learn's `HistGradientBoostingClassifier`: it handles missing values and categorical inputs natively and adds no dependency beyond scikit-learn. Fit preprocessing only on training data. Exclude raw user/computer IDs from the initial model inputs; use them for historical aggregation instead. Document any later identity-encoding experiment separately.
 
 A fallback triggered by a known outage flag is an instrumented/oracle baseline. A fallback based on observed DNS inactivity must use a causal, validation-tuned trigger and acknowledge that inactivity does not diagnose collection failure.
 
@@ -450,7 +450,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [ ] Relationship-novelty and rate rule baselines
 - [ ] Authentication-only model
 - [ ] Complete-telemetry combined model
-- [ ] Choose a gradient-boosting library
+- [x] Choose a gradient-boosting library
 - [ ] Decide whether DNS improves ranking under complete telemetry
 
 ### Phase 4 - DNS outage replay
