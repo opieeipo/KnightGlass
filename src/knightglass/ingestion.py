@@ -252,3 +252,41 @@ def match_redteam(auth_dir, redteam_path, out_dir=None):
         pq.write_table(keys, out_dir / "redteam_keys.parquet")
         (out_dir / "redteam_audit.json").write_text(json.dumps(audit, indent=2, default=str))
     return matches, audit
+
+
+def possible_redteam(auth_dir, keys, matches, exceptions=(), out_dir=None):
+    """Unlabeled rows in the possible red-team group. See README section 4.2.
+
+    A row qualifies when its source computer and source user both appear in
+    the red-team keys, it is an NTLM network logon, it falls on a day with at
+    least one key, and it is not already a known positive. Rows listed in
+    ``exceptions`` qualify regardless. Returns a table of ``row_id``, ``day``
+    and ``reason``.
+    """
+    known = matches.column("row_id")
+    key_days = pc.unique(pa.array(day_index(keys.column("time").to_numpy())))
+    auth = ds.dataset(auth_dir, format="parquet", partitioning="hive")
+    rule = (ds.field("source_computer").isin(pc.unique(keys.column("source_computer")))
+            & ds.field("source_user").isin(pc.unique(keys.column("user")))
+            & (ds.field("authentication_type") == "NTLM")
+            & (ds.field("logon_type") == "Network")
+            & ds.field("day").isin(key_days.cast(pa.int32())))
+    by_rule = auth.to_table(columns=["row_id", "day"], filter=rule)
+    by_rule = by_rule.filter(pc.invert(pc.is_in(by_rule.column("row_id"), known)))
+    by_rule = by_rule.append_column("reason", pa.array(["rule"] * by_rule.num_rows))
+
+    exceptions = pa.array(sorted(exceptions), pa.int64())
+    extra = auth.to_table(columns=["row_id", "day"], filter=ds.field("row_id").isin(exceptions))
+    bad = (set(exceptions.to_pylist()) - set(extra.column("row_id").to_pylist())) | (
+        set(exceptions.to_pylist()) & set(known.to_pylist()))
+    if bad:
+        raise ValueError(f"exception rows missing or already known positives: {sorted(bad)}")
+    extra = extra.filter(pc.invert(pc.is_in(extra.column("row_id"), by_rule.column("row_id"))))
+    extra = extra.append_column("reason", pa.array(["exception"] * extra.num_rows))
+
+    possible = pa.concat_tables([by_rule, extra.cast(by_rule.schema)]).sort_by("row_id")
+    if out_dir is not None:
+        out_dir = Path(out_dir)
+        out_dir.mkdir(parents=True, exist_ok=True)
+        pq.write_table(possible, out_dir / "possible_redteam.parquet")
+    return possible

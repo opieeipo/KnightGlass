@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 31%** (11 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 34%** (12 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ████████████░░░░░░░░  60% (6/10)
+Phase 1 - Data audit          ██████████████░░░░░░  70% (7/10)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -178,6 +178,17 @@ Provisional boundaries, using `day_index = floor((time - 1) / 86400) + 1`:
 | Test | 43–58 | Final evaluation only |
 
 Audit known-positive coverage before locking these boundaries. These are provisional engineering defaults, not a claim that positives occur in every interval. If test coverage is insufficient, select a documented alternative chronological or rolling-origin design. Do not select boundaries based on which model scores best. If supervised training positives are insufficient, use an anomaly-ranking formulation rather than borrowing future labels.
+
+Coverage audit of the provisional boundaries (matched keys and possible red-team rows, section 4):
+
+| Period | Days | Matched keys | Possible rows | Days with keys |
+|---|---|---:|---:|---|
+| Warm-up | 1–7 | 49 | 184 | 2, 3, 6, 7 |
+| Training | 8–30 | 652 | 433 | 8–10, 13–16, 21–23, 27–30 |
+| Validation | 31–42 | 0 | 0 | none |
+| Test | 43–58 | 0 | 1 | none |
+
+Validation and test contain no known positives, so the provisional boundaries cannot measure recall and must be replaced before modeling. All known positives fall on days 2–30; 669 of the 701 matched keys come from source computer `C17693`.
 
 Within each evaluation period, historical features may update from earlier observed events, but model parameters remain fixed. Future labels are never used in feature construction.
 
@@ -388,7 +399,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Ingest the full authentication archive
 - [x] Run the full red-team matching audit
 - [x] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
-- [ ] Audit known-positive coverage across the proposed splits
+- [x] Audit known-positive coverage across the proposed splits
 - [ ] Quantify DNS pair coverage and missing identifiers
 - [ ] Decide how to treat the DNS break around days 24 to 27
 - [ ] Lock chronological split boundaries

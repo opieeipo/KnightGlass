@@ -19,6 +19,11 @@ data:
 
 seed: 0
 
+# Label groups (README section 4).
+labels:
+  # Rows added to the possible red-team group by hand (README section 4.2).
+  possible_exceptions: [897415494]
+
 # day_index = floor((time - 1) / 86400) + 1
 splits:
   warmup: [1, 7]
