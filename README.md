@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 24%** (8 of 34 tasks) -- see [TODO](#todo) for details
+**Overall: 26%** (9 of 34 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ███████░░░░░░░░░░░░░  33% (3/9)
+Phase 1 - Data audit          █████████░░░░░░░░░░░  44% (4/9)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -353,7 +353,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Streaming ingestion to day-partitioned Parquet
 - [x] Ingestion tests on synthetic data
 - [x] Red-team matching with duplicate, unmatched and one-to-many audit
-- [ ] Ingest the full authentication archive
+- [x] Ingest the full authentication archive
 - [ ] Run the full red-team matching audit
 - [ ] Audit known-positive coverage across the proposed splits
 - [ ] Quantify DNS pair coverage and missing identifiers
