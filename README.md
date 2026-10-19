@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 26%** (9 of 34 tasks) -- see [TODO](#todo) for details
+**Overall: 29%** (10 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          █████████░░░░░░░░░░░  44% (4/9)
+Phase 1 - Data audit          ██████████░░░░░░░░░░  50% (5/10)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -111,12 +111,40 @@ Match red-team entries to authentication records using timestamp, source user, s
 
 Because the red-team key omits some authentication fields, multiple authentication records may match a single red-team entry. Preserve this ambiguity. Report raw matching-row counts, but evaluate known-positive recall primarily at the unique red-team-key level: a key is recovered if at least one matching authentication record is reviewed. Deduplicate keys before calculating recall.
 
-Use label language consistently:
+### 4.1 Label groups
 
-- Known positive: matches a documented red-team compromise key.
-- Unlabeled: does not match such a key; not certified benign.
+The red-team file lists positive events only; it has no label column and no benign labels. Presence of a matching key is the label. Every authentication record falls into exactly one of three groups:
 
-For supervised baselines, any treatment of unlabeled records as negative training examples is a noisy-label modeling assumption, not ground truth.
+- **Known positive:** matches a documented red-team compromise key exactly. Reliable when present, but the red-team record is not exhaustive.
+- **Possible red-team:** unlabeled, but matches the rule in section 4.2. Likely unrecorded red-team activity; not a confirmed positive.
+- **Unlabeled:** everything else. Not certified benign.
+
+Never extend a label by identity alone. A red-team key marks one event, not the user account or computer it involves: those accounts belong to real users who keep using them, and red-team source computers also carry ordinary activity.
+
+### 4.2 Possible red-team rule
+
+An unlabeled authentication record is possible red-team if all of these hold:
+
+- its source computer is a source computer in the red-team file;
+- its source user is a user in the red-team file;
+- its authentication type is NTLM and its logon type is Network, as in every matched red-team event;
+- it falls on a dataset day with at least one red-team key.
+
+The rule uses only facts taken from the red-team file. Do not add behavioral conditions such as login volume, novelty or rate: those are the signals the models score, so a label built from them would make evaluation circular. Freeze the rule before modeling and record any change.
+
+### 4.3 Unmatched red-team keys
+
+A red-team key with no exact authentication match cannot be recovered and is excluded from the recall denominator; report it separately. Where an unmatched key has authentication records that agree on time, user and source computer but differ in destination computer, do not substitute them as known positives. They fall in the possible red-team group when they satisfy section 4.2.
+
+### 4.4 Use in training and evaluation
+
+| Group | Training | Primary evaluation | Sensitivity check |
+|---|---|---|---|
+| Known positive | Positive class | Counts toward recall | Counts toward recall |
+| Possible red-team | Excluded | Not counted | Counts as positive |
+| Unlabeled | Negative class (assumed) | Not counted | Not counted |
+
+Models output one score per authentication record; the groups are evaluation bookkeeping, not classes the model predicts. Treating unlabeled records as negative training examples is a noisy-label modeling assumption, not ground truth. An alert on an unlabeled record is not a proven false positive.
 
 ## 5. Sampling and Chronological Evaluation
 
@@ -354,7 +382,8 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Ingestion tests on synthetic data
 - [x] Red-team matching with duplicate, unmatched and one-to-many audit
 - [x] Ingest the full authentication archive
-- [ ] Run the full red-team matching audit
+- [x] Run the full red-team matching audit
+- [ ] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
 - [ ] Audit known-positive coverage across the proposed splits
 - [ ] Quantify DNS pair coverage and missing identifiers
 - [ ] Decide how to treat the DNS break around days 24 to 27
