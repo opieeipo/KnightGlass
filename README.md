@@ -5,11 +5,11 @@
 
 ## Project Progress
 
-**Overall: 34%** (12 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 37%** (13 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
-Phase 1 - Data audit          ██████████████░░░░░░  70% (7/10)
+Phase 1 - Data audit          ████████████████░░░░  80% (8/10)
 Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 3 - Baselines           ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -238,6 +238,22 @@ Represent never-observed history separately from a measured elapsed time. Distin
 
 A DNS match supplies context, not proof that an authentication used that lookup. DNS silence is not proof of sensor failure. The released DNS schema does not support domain-string, TTL, query-type, or response-code features.
 
+### DNS coverage audit
+
+The DNS release changes scale at day 27. Days 1–23 hold about 45,000–95,000 records a day from 4,348 source computers; day 24 holds 9,610; days 25–26 hold none; days 27–58 hold about 0.6–1.6 million a day from 14,875 sources. Authentication has about 14,500 source computers throughout, so DNS before day 27 covers under a third of them. DNS has no missing identifiers.
+
+Share of authentication events with different source and destination computers that have earlier DNS context:
+
+| Days | Pair resolved within 24 h | Pair resolved within 1 h | Source resolved anything within 1 h |
+|---|---:|---:|---:|
+| 1–23 | 4.6% | 0.8% | 4.4% |
+| 24–26 | 1.4% | 0.0% | 0.2% |
+| 27–58 | 67.3% | 19.9% | 86.3% |
+
+No red-team source computer has a DNS record before day 27, so none of the 655 matched known-positive rows on days 2–23, and none of the 585 possible red-team rows there, has any earlier DNS context. Of the 47 matched rows on days 27–30, all have source DNS within 24 hours and 3 have ever resolved their destination.
+
+About 12.3 million authentication rows (1.2%) have a destination that is not a computer identifier, mostly `TGT` (10.9 million, Kerberos ticket requests) and user-like values such as `U22`. These can never match a DNS pair.
+
 ## 7. Controlled DNS-Loss Experiments
 
 Authentication scoring events remain intact. Only supporting DNS observations are suppressed.
@@ -400,7 +416,7 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 - [x] Run the full red-team matching audit
 - [x] Investigate unlabeled red-team-account NTLM logons from C17693 on day 51
 - [x] Audit known-positive coverage across the proposed splits
-- [ ] Quantify DNS pair coverage and missing identifiers
+- [x] Quantify DNS pair coverage and missing identifiers
 - [ ] Decide how to treat the DNS break around days 24 to 27
 - [ ] Lock chronological split boundaries
 
