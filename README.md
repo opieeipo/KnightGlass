@@ -5,12 +5,12 @@
 
 ## Project Progress
 
-**Overall: 46%** (16 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 54%** (19 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
 Phase 1 - Data audit          ████████████████████ 100% (10/10) ✓
-Phase 2 - Features & sampling ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
+Phase 2 - Features & sampling ████████████░░░░░░░░  60% (3/5)
 Phase 3 - Baselines           ████░░░░░░░░░░░░░░░░  20% (1/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 5 - Evaluation          ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
@@ -439,9 +439,9 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 
 ### Phase 2 - Causal features and sampling
 
-- [ ] Authentication history features
-- [ ] DNS context features
-- [ ] Equal-timestamp batch scoring before state updates
+- [x] Authentication history features
+- [x] DNS context features
+- [x] Equal-timestamp batch scoring before state updates
 - [ ] Time-stratified reservoir sample of unlabeled training rows
 - [ ] Sampling manifest with probabilities, row IDs and seeds
 
