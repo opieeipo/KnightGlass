@@ -156,6 +156,8 @@ Models output one score per authentication record; the groups are evaluation boo
 
 The following is the proposed initial sampling and evaluation protocol, subject to a documented feasibility audit.
 
+Every decision, deviation from this plan, and defect that affected results is recorded with its evidence and alternatives in [`docs/decision_log.md`](docs/decision_log.md).
+
 ### 5.2 Stream first; do not load all raw events into memory
 
 1. Read compressed files in chunks with explicit schemas.
