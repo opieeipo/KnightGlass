@@ -53,6 +53,21 @@ outages:
   seeds: [0, 1, 2, 3, 4]
   heldout: []  # set at least one duration or source-subset condition
 
+# Baseline settings grid (README section 8). Each model is fit on the
+# training sample for every combination, the best is chosen on validation by
+# mean recall across evaluation.daily_review_budgets, then refit on
+# refit_days and scored on test once.
+models:
+  logistic:
+    - {C: 0.01}
+    - {C: 1.0}
+  # l2_regularization keeps leaf values finite at this class imbalance; without
+  # it the boosting diverged (training AUC 0.58, scores saturated at 0 and 1).
+  hist_gb:
+    - {learning_rate: 0.1, max_leaf_nodes: 31, max_iter: 100, l2_regularization: 1.0}
+    - {learning_rate: 0.05, max_leaf_nodes: 63, max_iter: 100, l2_regularization: 1.0}
+  weighting: [unweighted, inclusion]
+
 evaluation:
   daily_review_budgets: [100, 500, 1000]
   recall_unit: unique_redteam_key

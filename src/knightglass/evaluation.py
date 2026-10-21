@@ -6,13 +6,48 @@ review budgets. Unlabeled rows are not treated as verified benign.
 
 from collections import Counter
 
+import polars as pl
+
 from knightglass.ingestion import day_index
 
 
-def recall_at_daily_budget(scores, keys, budget):
-    """Fraction of unique red-team keys with at least one matching row inside
-    each day's top-`budget` scored authentication records."""
-    raise NotImplementedError
+def daily_ranks(scored, seed, keep_top):
+    """Rank rows within each day by descending score; 1 is reviewed first.
+
+    Ties are broken by a hash of ``row_id`` seeded with ``seed``, so a
+    constant-score model gets chance-level recall instead of file order.
+    ``scored`` needs ``row_id``, ``day``, ``score``, ``label`` and
+    ``key_id``. Keeps the top ``keep_top`` rows of each day plus every
+    labeled row, which is all that budget recall needs.
+    """
+    return (scored.with_columns(pl.col("row_id").hash(seed).alias("_tie"))
+            .sort(["day", "score", "_tie"], descending=[False, True, False])
+            .with_columns(pl.int_range(1, pl.len() + 1).over("day").alias("rank"))
+            .filter((pl.col("rank") <= keep_top) | (pl.col("label") != "unlabeled"))
+            .drop("_tie"))
+
+
+def recall_at_daily_budget(ranked, budget, include_possible=False):
+    """Recall of unique known red-team keys within each day's top ``budget``.
+
+    A key is recovered if at least one of its rows is reviewed (README
+    section 4). With ``include_possible``, each possible red-team row also
+    counts as one positive unit (the section 4.4 sensitivity check).
+    Returns totals and per-day counts.
+    """
+    known = ranked.filter(pl.col("label") == "known_positive")
+    keys = known.group_by("key_id").agg(pl.col("day").first(), (pl.col("rank") <= budget).any()
+                                        .alias("hit"))
+    units = keys.select("day", "hit")
+    if include_possible:
+        units = pl.concat([units, ranked.filter(pl.col("label") == "possible")
+                           .select("day", (pl.col("rank") <= budget).alias("hit"))])
+    by_day = units.group_by("day").agg(pl.len().alias("positives"),
+                                       pl.col("hit").sum().alias("recovered")).sort("day")
+    total, hit = units.height, int(units["hit"].sum())
+    return {"budget": budget, "positives": total, "recovered": hit,
+            "recall": hit / total if total else None,
+            "by_day": {d: (r, p) for d, p, r in by_day.iter_rows()}}
 
 
 def split_of(day, splits):

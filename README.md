@@ -5,18 +5,18 @@
 
 ## Project Progress
 
-**Overall: 60%** (21 of 35 tasks) -- see [TODO](#todo) for details
+**Overall: 69%** (24 of 35 tasks) -- see [TODO](#todo) for details
 
 ```
 Phase 0 - Setup               ████████████████████ 100% (5/5) ✓
 Phase 1 - Data audit          ████████████████████ 100% (10/10) ✓
 Phase 2 - Features & sampling ████████████████████ 100% (5/5) ✓
-Phase 3 - Baselines           ████░░░░░░░░░░░░░░░░  20% (1/5)
+Phase 3 - Baselines           ████████████████░░░░  80% (4/5)
 Phase 4 - Outage replay       ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 Phase 5 - Evaluation          ░░░░░░░░░░░░░░░░░░░░   0% (0/5)
 ```
 
-*Last updated: 2026-10-19*
+*Last updated: 2026-10-21*
 
 ## Abstract
 
@@ -447,9 +447,9 @@ LANL states that, to the extent possible under law, it has waived copyright and 
 
 ### Phase 3 - Baselines
 
-- [ ] Relationship-novelty and rate rule baselines
-- [ ] Authentication-only model
-- [ ] Complete-telemetry combined model
+- [x] Relationship-novelty and rate rule baselines
+- [x] Authentication-only model
+- [x] Complete-telemetry combined model
 - [x] Choose a gradient-boosting library
 - [ ] Decide whether DNS improves ranking under complete telemetry
 
